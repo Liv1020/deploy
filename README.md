@@ -21,3 +21,8 @@ your-deploy-path add build.sh
 
 ### deploy
 your-deploy-path add deploy.sh
+
+### view log
+```
+curl http://127.0.0.1:4321/log
+```
