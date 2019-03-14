@@ -36,13 +36,13 @@ func InitLogFile() {
 			log.Fatalln(err)
 			return
 		}
+	}
 
-		var err error
-		out, err = os.OpenFile(name, os.O_CREATE|os.O_WRONLY|os.O_APPEND|os.O_SYNC, os.ModePerm)
-		if err != nil {
-			log.Fatalln(err)
-			return
-		}
+	var err error
+	out, err = os.OpenFile(name, os.O_CREATE|os.O_WRONLY|os.O_APPEND|os.O_SYNC, os.ModePerm)
+	if err != nil {
+		log.Fatalln(err)
+		return
 	}
 }
 

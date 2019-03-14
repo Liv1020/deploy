@@ -2,18 +2,20 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
 	"os/exec"
 	"runtime"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
-var lock = new(OptimisticLock)
+var lock = new(sync.Mutex)
 
 // DeployHandler DeployHandler
 func DeployHandler(c *gin.Context) {
@@ -31,13 +33,6 @@ func DeployHandler(c *gin.Context) {
 		return
 	}
 
-	if !lock.Lock() {
-		c.String(http.StatusOK, "Already has task, wait a moment. Or see <a href=\"http://%s/log\">deploy log</a>", c.Request.Host)
-		return
-	}
-
-	InitLogFile()
-
 	if runtime.GOOS == "windows" {
 		go updateGitFolder(path[1:])
 	} else {
@@ -48,8 +43,16 @@ func DeployHandler(c *gin.Context) {
 }
 
 func updateGitFolder(path string) {
+	lock.Lock()
 	defer func() {
-		lock.UnLock()
+		lock.Unlock()
+	}()
+
+	InitLogFile()
+	defer func() {
+		if err := out.Close(); err != nil {
+			fmt.Println(err)
+		}
 	}()
 
 	Println("======================= Date ========================")
