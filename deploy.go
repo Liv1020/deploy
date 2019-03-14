@@ -22,6 +22,11 @@ func DeployHandler(c *gin.Context) {
 	}
 
 	path := c.Query("path")
+	if path == "" {
+		c.String(http.StatusOK, "path can't empty")
+		return
+	}
+
 	if strings.Contains(path, "favicon.ico") {
 		return
 	}

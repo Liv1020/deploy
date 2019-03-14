@@ -38,7 +38,7 @@ func InitLogFile() {
 		}
 
 		var err error
-		out, err = os.OpenFile(logFileName(), os.O_RDWR|os.O_CREATE, 0777)
+		out, err = os.OpenFile(name, os.O_CREATE|os.O_WRONLY|os.O_APPEND|os.O_SYNC, os.ModePerm)
 		if err != nil {
 			log.Fatalln(err)
 			return
