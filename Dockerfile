@@ -24,4 +24,4 @@ COPY --from=build /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 COPY --from=build /var/opt/code/deploy .
 
-CMD ["/usr/local/code/system-api"]
+CMD ["/usr/local/code/deploy"]
